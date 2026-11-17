@@ -11,16 +11,16 @@ sequenceDiagram
     U->>+UI: viewResults()
     UI-->>U: results зі списком філій
     opt Шукач обирає філію з результатів
-        U->>UI: selectBranch(libraryId)
+        U->>+UI: selectBranch(libraryId)
         UI->>+SS: getBranchInfo(libraryId)
         SS->>+B: findById(libraryId)
         B-->>-SS: назва_філії, адреса
         SS-->>-UI: branchInfo
-        UI-->>U: showBranch(назва_філії, адреса)
+        UI-->>-U: showBranch(назва_філії, адреса)
     end
     UI-->>-U: екран результатів
 ```
 
 ## Пояснення
 - Перегляд адреси необов'язковий (extend до UC-1), тому його показано фрагментом opt (FR-7).
-- Інтерфейс працює і до фрагмента, і після нього, тому його смуга активності не обривається.
+- Вибір філії має return (showBranch). Інтерфейс працює і до фрагмента, і після нього, смуга активності не обривається.
