@@ -16,17 +16,17 @@ sequenceDiagram
     K-->>-SS: books
     Note right of SS: Вільний примірник: немає Видачі з порожньою дата_повернення, стан не «втрачений»
     loop Для кожної знайденої Книги
-        par Примірники книги
-            SS->>+P: findCopiesByBook(bookId)
-            P-->>-SS: copies
-        and Активні видачі книги
-            SS->>+V: findActiveLoans(bookId)
-            V-->>-SS: activeLoans
-        end
+        SS->>+P: findCopiesByBook(bookId)
+        P-->>-SS: copies
+        SS->>+V: findActiveLoansByCopies(copyIds)
+        V-->>-SS: activeLoans
         loop Для кожної Бібліотеки з примірниками
-            SS->>+B: getBranch(libraryId)
-            B-->>-SS: назва_філії
-            SS->>SS: countFreeCopies(copies, activeLoans)
+            par Назва філії
+                SS->>+B: getBranch(libraryId)
+                B-->>-SS: назва_філії
+            and Кількість вільних
+                SS->>SS: countFreeCopies(copies, activeLoans, libraryId)
+            end
         end
     end
     SS-->>-UI: results
@@ -34,6 +34,6 @@ sequenceDiagram
 ```
 
 ## Пояснення
-- Сервіс пошуку шукає Книги, а потім для кожної паралельно (par) бере Примірники та активні Видачі.
-- У вкладеному циклі по Бібліотеках рахується кількість вільних примірників.
+- Видача пов'язана лише з Примірником, тому активні видачі шукаємо за примірниками книги, після того як їх отримано.
+- Паралельними (par) є тільки незалежні кроки: взяти назву філії та порахувати вільних.
 - Смуги Інтерфейсу та Сервісу починаються до фрагментів і закінчуються після них.

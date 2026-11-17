@@ -17,7 +17,7 @@ sequenceDiagram
     loop Для кожної знайденої Книги
         SS->>+P: findCopiesByBook(bookId)
         P-->>-SS: copies
-        SS->>+V: findActiveLoans(bookId)
+        SS->>+V: findActiveLoansByCopies(copyIds)
         V-->>-SS: activeLoans
         loop Для кожної Бібліотеки з примірниками
             SS->>+B: getBranch(libraryId)
