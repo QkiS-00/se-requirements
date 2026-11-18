@@ -25,10 +25,8 @@ sequenceDiagram
             SS->>SS: countFreeCopies(copies, activeLoans, libraryId)
         end
         SS->>SS: sumFreeCopies(counts)
-        alt У цієї Книги вільних примірників немає ніде
+        opt У цієї Книги вільних примірників немає ніде
             SS->>SS: addMessage("Вільних примірників немає")
-        else Є хоча б один вільний примірник
-            SS->>SS: keepCounts()
         end
     end
     SS-->>-UI: results (для кожної Книги нулі по філіях і повідомлення)
